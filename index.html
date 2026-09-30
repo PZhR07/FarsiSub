@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="fa" dir="rtl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="farsisub-token" content="{{ token }}">
+  <title>واژه‌نما | زیرنویس فارسی آفلاین</title>
+  <link rel="stylesheet" href="/static/style.css">
+  <script defer src="/static/app.js"></script>
+</head>
+<body>
+  <div class="shell">
+    <header><a class="brand" href="/" aria-label="واژه‌نما"><span class="logo">و</span><span>واژه‌نما<small>FARSISUB / LOCAL STUDIO</small></span></a><span class="privacy"><i></i> روی کامپیوتر شما</span></header>
+    <main>
+      <section class="intro"><span class="eyebrow">از صدای انگلیسی تا زیرنویس فارسی</span><h1>فیلم شما،<br><em>به زبان شما.</em></h1><p>مسیر فیلم را وارد کنید. صدا استخراج می‌شود، گفتار به فارسی ترجمه می‌شود و زیرنویس با زمان‌های گفتار اصلی ساخته می‌شود.</p><div class="tags"><span>بدون ارسال فایل</span><span>خروجی SRT</span><span>قابل ویرایش</span></div></section>
+      <section class="card input-card" aria-labelledby="input-title"><div class="section-head"><h2 id="input-title">یک فیلم انتخاب کنید</h2><span class="step-label">۰۱ / شروع</span></div>
+        <div id="readiness" class="notice">در حال بررسی مدل‌های محلی…</div>
+        <form id="job-form">
+          <label for="path">مسیر کامل فایل</label><input id="path" name="path" dir="ltr" placeholder="D:\Movies\my-video.mp4" required autocomplete="off" spellcheck="false">
+          <p class="hint">در ویندوز روی فایل راست‌کلیک کنید و «Copy as path» را بزنید، سپس اینجا جای‌گذاری کنید.</p>
+          <div class="audio-picker"><button id="probe-audio" class="secondary" type="button">بررسی مسیرهای صوتی</button><div><label for="audio-track">صدای فیلم</label><select id="audio-track"><option value="0">مسیر صوتی اول</option></select></div></div>
+          <label class="context-option"><input id="context-translation" type="checkbox" checked> ترجمهٔ پیوستهٔ جمله‌ها برای حفظ بافت</label>
+          <div class="form-bottom"><div><label for="device">روش پردازش</label><select id="device"><option value="auto">خودکار · GPU با امکان ادامه روی CPU</option><option value="cuda">فقط کارت گرافیک NVIDIA</option><option value="cpu">فقط CPU · مصرف حافظه کمتر</option></select></div><button id="start" class="primary" type="submit" disabled>ساخت زیرنویس <span aria-hidden="true">←</span></button></div>
+        </form>
+        <div id="form-error" class="error" role="alert" hidden></div>
+        <p class="footnote">فایل اصلی تغییر نمی‌کند. خروجی‌ها در پوشهٔ برنامه ذخیره می‌شوند.</p>
+      </section>
+
+      <section id="job-panel" class="card" hidden aria-labelledby="job-name">
+        <div class="section-head"><div><span class="eyebrow">پردازش انتخاب‌شده</span><h2 id="job-name" dir="auto"></h2></div><span id="device-badge" class="badge">—</span></div>
+        <ol class="stages"><li data-stage="extracting">۱. استخراج صدا</li><li data-stage="transcribing">۲. تشخیص گفتار</li><li data-stage="translating">۳. ترجمه فارسی</li><li data-stage="done">۴. دریافت زیرنویس</li></ol>
+        <div class="progress-row"><span id="job-message" role="status" aria-live="polite"></span><span id="percent" dir="ltr">0%</span></div><progress id="progress" max="100" value="0"></progress>
+        <p id="job-warning" class="notice warning" hidden></p>
+        <div class="actions"><button id="cancel" class="secondary" type="button">توقف پردازش</button><button id="retry" class="secondary" type="button" hidden>ادامهٔ پردازش</button><span id="result-count" class="hint"></span></div>
+        <div id="downloads" class="downloads" hidden><a id="download-srt" class="primary" download>دریافت زیرنویس فارسی ↓</a><a id="download-english" class="secondary" download>زیرنویس انگلیسی</a><a id="download-audio" class="secondary" download>صدای استخراج‌شده</a></div>
+      </section>
+
+      <section id="editor" class="card" hidden aria-labelledby="editor-title">
+        <div class="section-head"><div><span class="eyebrow">بازبینی نهایی</span><h2 id="editor-title">ببینید، بخوانید، اصلاح کنید.</h2></div><button id="save" class="primary" type="button" disabled>ذخیرهٔ تغییرات</button></div>
+        <div class="editor-grid"><div class="preview"><video id="video" controls preload="metadata"><track id="subtitle-track" label="فارسی" kind="subtitles" srclang="fa" default></video><p id="video-hint" class="hint">روی زمان هر بخش بزنید تا همان لحظه پخش شود. پخش بعضی فرمت‌ها مثل MKV به مرورگر بستگی دارد. صدای پیش‌نمایش مرورگر ممکن است مسیر اول فیلم باشد؛ فایل صدای استخراج‌شده مربوط به مسیر انتخابی شماست.</p><p class="notice">زمان‌ها از گفتار اصلی گرفته شده‌اند. اصلاح متن، زمان‌بندی را تغییر نمی‌دهد.</p><p id="save-message" role="status"></p></div><div><label for="search">جست‌وجو در زیرنویس</label><input id="search" placeholder="متن انگلیسی یا فارسی…"><div id="cue-list" class="cue-list"></div><div class="pagination"><button id="page-prev" class="secondary" type="button">قبلی</button><span id="page-label" role="status"></span><button id="page-next" class="secondary" type="button">بعدی</button></div></div></div>
+      </section>
+
+      <section class="history-section"><div class="section-head"><h2>فیلم‌های اخیر</h2><span class="step-label">ذخیره‌شده روی دستگاه</span></div><div id="history" class="history"><p class="hint">هنوز فیلمی پردازش نشده است.</p></div></section>
+      <details class="help"><summary>راهنمای نصب اولیه و استفادهٔ آفلاین</summary><p>بار اول فایل setup.bat را اجرا کنید تا کتابخانه‌ها و مدل‌ها دانلود شوند. بعد از آماده‌شدن مدل‌ها، start.bat برنامه را بدون اینترنت اجرا می‌کند. برای سرعت GPU، کتابخانه‌های CUDA 12 و cuDNN 9 لازم‌اند؛ راهنمای README_FA.md را بخوانید. در حالت خودکار، خطای GPU باعث ادامه با CPU می‌شود.</p><p>ترجمه ماشینی است و ممکن است در اصطلاحات، اسامی و گفتار نامفهوم نیاز به اصلاح داشته باشد. مدل ترجمهٔ این نسخه مجوز استفادهٔ غیرتجاری دارد.</p></details>
+    </main><footer><span>واژه‌نما / ساخته‌شده برای تماشای بهتر</span><span>EN → FA · OFFLINE</span></footer>
+  </div>
+</body>
+</html>
